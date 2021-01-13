@@ -44,3 +44,5 @@ def start_parsing():
 
     with open(config.DB_FILENAME, 'w') as f:
         f.write(json.dumps(data_massive))
+
+start_parsing()
