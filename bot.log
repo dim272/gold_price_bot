@@ -1,0 +1,303 @@
+10-Jan-21 16:57:28 - aiogram - WARNING - Updates were skipped successfully.
+10-Jan-21 16:57:29 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-9' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=BadRequest("Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard")>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 246, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "bot.py", line 19, in start_message
+    await message.answer(f"Цена одного грамма чистого золота 999 пробы (24K):\n"
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/types/message.py", line 339, in answer
+    return await self.bot.send_message(
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 318, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 208, in request
+    return await api.make_request(self.session, self.server, self.__token, method, data, files,
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise cls(description)
+aiogram.utils.exceptions.BadRequest: Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard
+10-Jan-21 16:58:06 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-15' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=BadRequest("Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard")>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 246, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "bot.py", line 19, in start_message
+    await message.answer(f"Цена одного грамма чистого золота 999 пробы (24K):\n"
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/types/message.py", line 339, in answer
+    return await self.bot.send_message(
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 318, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 208, in request
+    return await api.make_request(self.session, self.server, self.__token, method, data, files,
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise cls(description)
+aiogram.utils.exceptions.BadRequest: Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard
+10-Jan-21 16:58:13 - aiogram - WARNING - Goodbye!
+10-Jan-21 20:34:15 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-8' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=BadRequest("Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard")>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 246, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/gold_choice.py", line 13, in start_message
+    await message.answer(f"Цена одного грамма чистого золота 999 пробы (24K):\n"
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/types/message.py", line 339, in answer
+    return await self.bot.send_message(
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 318, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 208, in request
+    return await api.make_request(self.session, self.server, self.__token, method, data, files,
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise cls(description)
+aiogram.utils.exceptions.BadRequest: Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard
+10-Jan-21 20:34:53 - aiogram - WARNING - Goodbye!
+10-Jan-21 20:37:34 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-7' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=BadRequest("Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard")>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 246, in process_update
+    return await self.message_handlers.notify(update.message)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/gold_choice.py", line 13, in start_message
+    await message.answer(f"Цена одного грамма чистого золота 999 пробы (24K):\n"
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/types/message.py", line 339, in answer
+    return await self.bot.send_message(
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/bot.py", line 318, in send_message
+    result = await self.request(api.Methods.SEND_MESSAGE, payload)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/base.py", line 208, in request
+    return await api.make_request(self.session, self.server, self.__token, method, data, files,
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 140, in make_request
+    return check_result(method, response.content_type, response.status, await response.text())
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/bot/api.py", line 115, in check_result
+    exceptions.BadRequest.detect(description)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/utils/exceptions.py", line 140, in detect
+    raise cls(description)
+aiogram.utils.exceptions.BadRequest: Can't parse inline keyboard button: text buttons are unallowed in the inline keyboard
+10-Jan-21 20:37:52 - aiogram - WARNING - Goodbye!
+10-Jan-21 20:40:28 - aiogram - WARNING - Goodbye!
+10-Jan-21 20:40:52 - aiogram - WARNING - Goodbye!
+10-Jan-21 20:42:51 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:20:26 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-12' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:20:30 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-16' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:20:31 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:21:45 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-27' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:21:50 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-32' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:22:11 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-37' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:22:12 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-42' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:22:12 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-46' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:22:12 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-50' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=KeyError(2)>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 28, in gold_choice_message
+    selected_gold = callback_data[2]
+KeyError: 2
+10-Jan-21 22:22:24 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:24:02 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-12' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=TypeError("unsupported operand type(s) for /: 'str' and 'int'")>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 34, in gold_choice_message
+    price_usd = gr_999_usd * (selected_gold / 1000)
+TypeError: unsupported operand type(s) for /: 'str' and 'int'
+10-Jan-21 22:26:08 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:26:16 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-12' coro=<Dispatcher._process_polling_updates() done, defined at /home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py:380> exception=TypeError("unsupported operand type(s) for /: 'str' and 'int'")>
+Traceback (most recent call last):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 388, in _process_polling_updates
+    for responses in itertools.chain.from_iterable(await self.process_updates(updates, fast)):
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 225, in process_updates
+    return await asyncio.gather(*tasks)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/dispatcher.py", line 273, in process_update
+    return await self.callback_query_handlers.notify(update.callback_query)
+  File "/home/let/PycharmProjects/t_gold_price/venv/lib/python3.8/site-packages/aiogram/dispatcher/handler.py", line 117, in notify
+    response = await handler_obj.handler(*args, **partial_data)
+  File "/home/let/PycharmProjects/t_gold_price/handlers/main_handlers.py", line 35, in gold_choice_message
+    price_usd = gr_999_usd * (selected_gold / 1000)
+TypeError: unsupported operand type(s) for /: 'str' and 'int'
+10-Jan-21 22:27:51 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:28:39 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:29:12 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:31:38 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:40:07 - aiogram - WARNING - Goodbye!
+10-Jan-21 22:42:10 - aiogram - WARNING - Goodbye!
