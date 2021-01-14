@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.types import CallbackQuery
 
 from keyboards.inline.callback import gold_choice_callback
-from keyboards.inline.gold_keyboard import gold_choice
+from keyboards.inline.gold_keyboard import new_keyboard
 from bot import get_data
 from loader import dp
 
@@ -10,13 +10,11 @@ from loader import dp
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
     data_from_db = get_data()
-    await message.answer(f"Цена одного грамма чистого золота 999 пробы (24K):\n"
-                         f"The price of one gram of pure gold 999 (24 karat):\n"
-                         f"₽ - {data_from_db['gr_999_rub']}\n"
-                         f"$ - {data_from_db['gr_999_usd']}\n"
-                         f"Какая проба Вас интересует?\n"
-                         f"What gold are you interested in?",
-                         reply_markup=gold_choice
+    await message.answer(f'По 📈 цена золота 999 пробы:\n'
+                         f'{data_from_db["gr_999_rub"]} ₽ за грамм\n'
+                         f'{data_from_db["gr_999_usd"]} $ за грамм\n'
+                         f'Какая проба Вас интересует?\n',
+                         reply_markup=new_keyboard('999')
                          )
 
 
@@ -29,10 +27,8 @@ async def gold_choice_message(call: CallbackQuery, callback_data: dict):
     key_from_db = f'gr_{selected_gold}_rub'
     price_rub = data_from_db[key_from_db]
     price_usd = round((gr_999_usd * (int(selected_gold) / 1000)), 2)
-    await call.message.answer(f"Цена одного грамма золота {selected_gold} пробы:\n"
-                              f"The price of one gram of {selected_gold} gold:\n"
-                              f"₽ - {price_rub}\n"
-                              f"$ - {price_usd}\n"
-                              f"Какая проба Вас интересует?\n"
-                              f"What gold are you interested in?",
-                              reply_markup=gold_choice)
+    await call.message.answer(f"По 📈 цена золота {selected_gold} пробы:\n"
+                              f"{price_rub} ₽ за грамм\n"
+                              f"{price_usd} $ за грамм\n"
+                              f"Какая проба Вас интересует?\n",
+                              reply_markup=new_keyboard(selected_gold))
