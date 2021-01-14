@@ -1,4 +1,5 @@
 .env
-venv/
+.idea
+venv
 bot.log
 datafile
