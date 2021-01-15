@@ -15,9 +15,11 @@ def start_parsing():
     oz_usd = float(
         soup_gold.find('span', {'class': 'chart__info__sum'}).text.replace(' ', '').replace('$', '').replace(',', '.'))
 
+    '''
     if oz_usd is None or oz_usd == 0.0 or oz_usd == 0 or oz_usd is False:
         page_gold = requests.get(config.GOLD_URL2, headers=headers)
         oz_usd = soup_gold.find('td', {'id': 'AU-bid'})
+    '''
 
     page_usd = requests.get(config.USD_URL, headers=headers)
     soup_usd = BeautifulSoup(page_usd.content, 'html.parser')
@@ -43,5 +45,3 @@ def start_parsing():
 
     with open(config.DB_FILENAME, 'w') as f:
         f.write(json.dumps(data_massive))
-
-start_parsing()

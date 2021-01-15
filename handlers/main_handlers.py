@@ -10,7 +10,7 @@ from loader import dp
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
     data_from_db = get_data()
-    await message.answer(f'По 📈 цена золота 999 пробы:\n'
+    await message.answer(f'📈 Цена золота 999 пробы:\n'
                          f'{data_from_db["gr_999_rub"]} ₽ за грамм\n'
                          f'{data_from_db["gr_999_usd"]} $ за грамм\n'
                          f'Какая проба Вас интересует?\n',
@@ -27,7 +27,7 @@ async def gold_choice_message(call: CallbackQuery, callback_data: dict):
     key_from_db = f'gr_{selected_gold}_rub'
     price_rub = data_from_db[key_from_db]
     price_usd = round((gr_999_usd * (int(selected_gold) / 1000)), 2)
-    await call.message.answer(f"По 📈 цена золота {selected_gold} пробы:\n"
+    await call.message.answer(f"📈 Цена золота {selected_gold} пробы:\n"
                               f"{price_rub} ₽ за грамм\n"
                               f"{price_usd} $ за грамм\n"
                               f"Какая проба Вас интересует?\n",
