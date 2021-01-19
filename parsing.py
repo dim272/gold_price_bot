@@ -26,7 +26,7 @@ def start_parsing():
 
     usd = float(
         soup_usd.find('span', {'class': 'chart__info__sum'}).text.replace(' ', '').replace('₽', '').replace(',', '.'))
-
+    print(usd)
     gr_999_usd = round(float(oz_usd / 31.1), 2)
     gr_999_rub = int((oz_usd * usd) / 31.1)
     gr_958_rub = int(gr_999_rub * 0.958)
