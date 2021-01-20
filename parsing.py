@@ -1,7 +1,30 @@
+import os.path
+import datetime
+import json
+
 import requests
 from bs4 import BeautifulSoup
-import json
 import config
+
+
+def get_data():
+    if os.path.exists(config.DB_FILENAME) is True:
+        today = datetime.datetime.today()
+        modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(config.DB_FILENAME))
+        duration = today - modified_date
+        if duration.seconds >= 3600 and os.path.getsize(config.DB_FILENAME) == 0:
+            start_parsing()
+    else:
+        start_parsing()
+
+    data = read_data_from_datafile()
+    return data
+
+
+def read_data_from_datafile():
+    with open(config.DB_FILENAME, 'r') as f:
+        value = json.loads(f.readline())
+    return value
 
 
 def start_parsing():
@@ -14,12 +37,6 @@ def start_parsing():
 
     oz_usd = float(
         soup_gold.find('span', {'class': 'chart__info__sum'}).text.replace(' ', '').replace('$', '').replace(',', '.'))
-
-    '''
-    if oz_usd is None or oz_usd == 0.0 or oz_usd == 0 or oz_usd is False:
-        page_gold = requests.get(config.GOLD_URL2, headers=headers)
-        oz_usd = soup_gold.find('td', {'id': 'AU-bid'})
-    '''
 
     page_usd = requests.get(config.USD_URL, headers=headers)
     soup_usd = BeautifulSoup(page_usd.content, 'html.parser')
