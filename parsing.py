@@ -55,10 +55,7 @@ def start_parsing():
     gr_375_rub = int(gr_999_rub * 0.375)
     gr_333_rub = int(gr_999_rub * 0.333)
 
-    data_massive = {'oz_usd': oz_usd, 'gr_999_usd': gr_999_usd, 'gr_999_rub': gr_999_rub, 'gr_958_rub': gr_958_rub,
-                    'gr_900_rub': gr_900_rub, 'gr_850_rub': gr_850_rub, 'gr_750_rub': gr_750_rub,
-                    'gr_585_rub': gr_585_rub, 'gr_500_rub': gr_500_rub, 'gr_375_rub': gr_375_rub,
-                    'gr_333_rub': gr_333_rub}
+    data_massive = [oz_usd, gr_999_usd, gr_999_rub, gr_958_rub, gr_900_rub, gr_850_rub, gr_750_rub, gr_585_rub,
+                    gr_500_rub, gr_375_rub, gr_333_rub]
 
-    with open(config.DB_FILENAME, 'w') as f:
-        f.write(json.dumps(data_massive))
+    return ', '.join(map(str, data_massive))
