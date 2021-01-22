@@ -12,7 +12,7 @@ def get_data():
         today = datetime.datetime.today()
         modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(config.DB_FILENAME))
         duration = today - modified_date
-        if duration.seconds >= 3600 and os.path.getsize(config.DB_FILENAME) == 0:
+        if duration.seconds >= 600 or os.path.getsize(config.DB_FILENAME) == 0:
             start_parsing()
     else:
         start_parsing()
@@ -43,7 +43,7 @@ def start_parsing():
 
     usd = float(
         soup_usd.find('span', {'class': 'chart__info__sum'}).text.replace(' ', '').replace('₽', '').replace(',', '.'))
-    print(usd)
+
     gr_999_usd = round(float(oz_usd / 31.1), 2)
     gr_999_rub = int((oz_usd * usd) / 31.1)
     gr_958_rub = int(gr_999_rub * 0.958)
