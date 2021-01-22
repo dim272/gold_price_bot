@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-CHOICE_SIGN = '🔘 '
+CHOICE_SIGN = '🟡 '
 
 
 def new_keyboard(active_button):
