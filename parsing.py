@@ -1,30 +1,6 @@
-import os.path
-import datetime
-import json
-
 import requests
 from bs4 import BeautifulSoup
-import config
-
-
-def get_data():
-    if os.path.exists(config.DB_FILENAME) is True:
-        today = datetime.datetime.today()
-        modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(config.DB_FILENAME))
-        duration = today - modified_date
-        if duration.seconds >= 600 or os.path.getsize(config.DB_FILENAME) == 0:
-            start_parsing()
-    else:
-        start_parsing()
-
-    data = read_data_from_datafile()
-    return data
-
-
-def read_data_from_datafile():
-    with open(config.DB_FILENAME, 'r') as f:
-        value = json.loads(f.readline())
-    return value
+from config import config
 
 
 def start_parsing():
@@ -41,8 +17,9 @@ def start_parsing():
     page_usd = requests.get(config.USD_URL, headers=headers)
     soup_usd = BeautifulSoup(page_usd.content, 'html.parser')
 
-    usd = float(
-        soup_usd.find('span', {'class': 'chart__info__sum'}).text.replace(' ', '').replace('₽', '').replace(',', '.'))
+    usd = round(float(
+        soup_usd.find('span', {'class': 'chart__info__sum'})
+            .text.replace(' ', '').replace('₽', '').replace(',', '.')), 2)
 
     gr_999_usd = round(float(oz_usd / 31.1), 2)
     gr_999_rub = int((oz_usd * usd) / 31.1)
@@ -55,7 +32,10 @@ def start_parsing():
     gr_375_rub = int(gr_999_rub * 0.375)
     gr_333_rub = int(gr_999_rub * 0.333)
 
-    data_massive = [oz_usd, gr_999_usd, gr_999_rub, gr_958_rub, gr_900_rub, gr_850_rub, gr_750_rub, gr_585_rub,
-                    gr_500_rub, gr_375_rub, gr_333_rub]
+    data_massive = {'usd': usd, 'oz_usd': oz_usd, 'gr_999_usd': gr_999_usd, 'gr_999_rub': gr_999_rub,
+                    'gr_958_rub': gr_958_rub, 'gr_900_rub': gr_900_rub, 'gr_850_rub': gr_850_rub,
+                    'gr_750_rub': gr_750_rub, 'gr_585_rub': gr_585_rub, 'gr_500_rub': gr_500_rub,
+                    'gr_375_rub': gr_375_rub, 'gr_333_rub': gr_333_rub
+                    }
 
-    return ', '.join(map(str, data_massive))
+    return data_massive
