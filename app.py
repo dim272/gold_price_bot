@@ -4,8 +4,8 @@ from aiogram.types import CallbackQuery
 
 from keyboards.inline.callback import gold_choice_callback
 from keyboards.inline.gold_keyboard import new_keyboard
-from parsing import get_data
-import config
+from data import value_db, users_db
+from config import config
 
 logging.basicConfig(level=logging.ERROR,
                     filename='bot.log',
@@ -16,10 +16,13 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
-    data_from_db = get_data()
+    user = message.from_user
+    users_db.check_user(user)
+    gr_999_rub = round(value_db.read_value_db('gr_999_rub'))
+    gr_999_usd = value_db.read_value_db('gr_999_usd')
     await message.answer(f'📈 Цена золота 999 пробы:\n'
-                         f'{data_from_db["gr_999_rub"]} ₽ за грамм\n'
-                         f'{data_from_db["gr_999_usd"]} $ за грамм\n'
+                         f'{gr_999_rub} ₽ за грамм\n'
+                         f'{gr_999_usd} $ за грамм\n'
                          f'Какая проба Вас интересует?\n',
                          reply_markup=new_keyboard('999')
                          )
@@ -28,17 +31,20 @@ async def start_message(message: types.Message):
 @dp.callback_query_handler(gold_choice_callback.filter(metal='gold'))
 async def gold_choice_message(call: CallbackQuery, callback_data: dict):
     await call.answer(cache_time=60)
-    data_from_db = get_data()
-    gr_999_usd = data_from_db['gr_999_usd']
+    users_db.increase_value_in_stat_db('clicks')
+    user = call.from_user
+    users_db.check_user(user)
+    usd = value_db.read_value_db('usd')
     selected_gold = callback_data.get('probe')
-    key_from_db = f'gr_{selected_gold}_rub'
-    price_rub = data_from_db[key_from_db]
-    price_usd = round((gr_999_usd * (int(selected_gold) / 1000)), 2)
+    db_unit = callback_data.get('db_unit')
+    price_rub = round(value_db.read_value_db(db_unit))
+    price_usd = round((price_rub / usd), 2)
     await call.message.answer(f"📈 Цена золота {selected_gold} пробы:\n"
                               f"{price_rub} ₽ за грамм\n"
                               f"{price_usd} $ за грамм\n"
                               f"Какая проба Вас интересует?\n",
                               reply_markup=new_keyboard(selected_gold))
+
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)

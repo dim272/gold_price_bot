@@ -1,6 +1,9 @@
 .idea
 venv
 **/__pycache__
-.env
+config/.env
 bot.log
 datafile
+test.py
+data/users.db
+data/value.db
