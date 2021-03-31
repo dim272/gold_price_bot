@@ -5,12 +5,19 @@ import sqlite3
 
 from config import config
 
+# users.db CONTROL
+# if something goes wrong look at bot.log
 
 __DB = config.USERS_SQL_FILENAME
 
+# Initialize table "stat"
+# where we will record data on:
+# the daily number of users         - users
+# the daily number of new users     - new_users
+# the daily number of requests      - clicks
+
 
 def init_stat_db(connect, cursor):
-    print('Инициализируем таблицу stat в users.db')
 
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS stat ( "
@@ -33,8 +40,10 @@ def init_stat_db(connect, cursor):
     connect.commit()
 
 
+# Initialize table "users_total"
+# where we will write data about each new user
+
 def init_users_total_db(connect, cursor):
-    print('Инициализируем таблицу users_total в users.db')
 
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS users_total ( "
@@ -52,12 +61,13 @@ def init_users_total_db(connect, cursor):
     connect.commit()
 
 
+# Initialize table "users_today"
+# this will tell us the number of unique users
+
 def init_users_today_db(connect, cursor):
-    print('Инициализируем таблицу users_today в users.db')
 
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS users_today ( "
-        "id             INTEGER PRIMARY KEY AUTOINCREMENT, "
         "user_id        INT, "
         "date           TEXT) "
     )
@@ -66,7 +76,6 @@ def init_users_today_db(connect, cursor):
 
 
 def is_users_db_exist():
-    print('Проверяем существование users.db')
 
     if not os.path.exists(__DB) or os.path.getsize(__DB) == 0:
         return False
@@ -83,16 +92,13 @@ def is_table_in_users_db_exist(cursor, table_name):
 
 
 def check_last_date_in_stat_db(connect, cursor, today):
-    print('Проверяем последнюю дату в stat > users.db')
 
     cursor.execute(
         "SELECT date FROM stat WHERE rowid = 90"
     )
     last_date_in_stat_db = cursor.fetchone()[0]
-    print('Последняя дата в stat > users_id.db', last_date_in_stat_db)
 
     if last_date_in_stat_db != today:
-        print('Обновляем последнюю дату в stat > users.db на', today)
 
         cursor.execute("DELETE FROM stat WHERE rowid = 1")
         connect.commit()
@@ -101,7 +107,6 @@ def check_last_date_in_stat_db(connect, cursor, today):
 
 
 def increase_value_in_stat_db(what_value):
-    print('Увеличиваем значение', what_value, 'в stat > users.db')
 
     connect = sqlite3.connect(__DB)
     cursor = connect.cursor()
@@ -122,8 +127,6 @@ def increase_value_in_stat_db(what_value):
     )
     connect.commit()
 
-    print('Значение', value_from_db, 'изменено на', new_value, 'в stat > users.db')
-
     cursor.close()
     connect.close()
 
@@ -131,38 +134,33 @@ def increase_value_in_stat_db(what_value):
 def check_date_in_users_today_db(connect, cursor, today):
     is_date_updated = True
 
-    print('Проверяем последнюю дату в users_today > users.db')
-
     cursor.execute(
         "SELECT date FROM users_today WHERE rowid = 1"
     )
     last_date_in_users_today_db = cursor.fetchone()
-    print('Последняя дата в users_today > users_id.db', last_date_in_users_today_db)
 
-    if last_date_in_users_today_db != today:
-        print('Обновляем последнюю дату в users_today > users.db на', today)
+    if last_date_in_users_today_db:
+        if last_date_in_users_today_db[0] != today:
 
-        cursor.execute("DELETE FROM users_today")
-        connect.commit()
+            cursor.execute("DELETE FROM users_today")
+            connect.commit()
 
-        is_date_updated = True
+            is_date_updated = True
 
     return is_date_updated
 
 
 def is_new_user_in_users_today_db(cursor, user):
-    print('Ищем пользователя в записях users_today > users.db')
 
     cursor.execute(
         "SELECT user_id FROM users_today WHERE user_id = (?)", (user.id,)
     )
     x = cursor.fetchone()
-    print("Результат поиска:", x)
+
     return x
 
 
 def add_user_in_users_today_db(user):
-    print('Начинаем добавление данных пользователя в users_today > users.db')
 
     connect = sqlite3.connect(__DB)
     cursor = connect.cursor()
@@ -196,7 +194,6 @@ def add_user_in_users_today_db(user):
 
 
 def is_new_user_in_users_total_db(cursor, user):
-    print('Ищем пользователя в записях users_total > users.db')
 
     cursor.execute(
         "SELECT user_id FROM users_total WHERE user_id = (?)", (user.id, )
@@ -206,7 +203,6 @@ def is_new_user_in_users_total_db(cursor, user):
 
 
 def add_new_user_in_users_total_db(connect, cursor, user, today):
-    print('Добавляем данные нового пользователя в users_total > users.db')
 
     name = (user.first_name + " " + user.last_name)
 
@@ -218,24 +214,10 @@ def add_new_user_in_users_total_db(connect, cursor, user, today):
     )
     connect.commit()
 
-    print(f'\n'
-          f'В user_id > users.db добавлен новый пользователь с данными:\n'
-          f'user id: {user.id}\n'
-          f'name: {name}\n'
-          f'username: {user.username}\n'
-          f'language: {user.language_code}\n'
-          f'first_visit: {today}\n'
-          f'last_visit: -\n'
-          f'visits_amount: 1\n'
-          f'is_bot: {user.is_bot}\n')
-
-    print('Даём задание увеличить переменную "new_users" в stat > users.db')
-
     increase_value_in_stat_db('new_users')
 
 
 def add_user_data_in_users_total_db(user):
-    print('Начинаем добавление данных пользователя в users_total > users.db')
 
     connect = sqlite3.connect(__DB)
     cursor = connect.cursor()
@@ -245,30 +227,26 @@ def add_user_data_in_users_total_db(user):
         init_users_total_db(connect, cursor)
 
     if not is_new_user_in_users_total_db(cursor, user):
-        print('Пользователь не найден в users_total > users.db\n'
-              'Даём задание добавить данные нового пользователя')
 
         add_new_user_in_users_total_db(connect, cursor, user, today)
 
     else:
-        print('Пользователь найден в users_total > users.db\n'
-              'Даём задание обновить данные количества посещений и даты последнего визита пользователя')
 
-        cursor.execute(
-            "SELECT visits_amount FROM users_total WHERE user_id = (?)", (user.id, )
-        )
-        visits_amount = cursor.fetchone()[0]
-        print(visits_amount)
-        increase_visits_amount = visits_amount + 1
-        print(increase_visits_amount)
+        if not is_new_user_in_users_today_db(cursor, user):
 
-        cursor.execute(
-            "UPDATE users_total "
-            "SET visits_amount=(?), last_visit=(?) "
-            "WHERE user_id=(?)",
-            (increase_visits_amount, today, user.id, )
-        )
-        connect.commit()
+            cursor.execute(
+                "SELECT visits_amount FROM users_total WHERE user_id = (?)", (user.id, )
+            )
+            visits_amount = cursor.fetchone()[0]
+            increase_visits_amount = visits_amount + 1
+
+            cursor.execute(
+                "UPDATE users_total "
+                "SET visits_amount=(?), last_visit=(?) "
+                "WHERE user_id=(?)",
+                (increase_visits_amount, today, user.id, )
+            )
+            connect.commit()
 
     cursor.close()
     connect.close()

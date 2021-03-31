@@ -6,6 +6,8 @@ import sqlite3
 from config import config
 import parsing
 
+# value.db CONTROL
+# if something goes wrong look at bot.log
 
 __DB = config.VALUE_SQL_FILENAME
 
