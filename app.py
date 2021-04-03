@@ -31,9 +31,9 @@ async def start_message(message: types.Message):
 @dp.callback_query_handler(gold_choice_callback.filter(metal='gold'))
 async def gold_choice_message(call: CallbackQuery, callback_data: dict):
     await call.answer(cache_time=60)
-    users_db.increase_value_in_stat_db('clicks')
     user = call.from_user
     users_db.check_user(user)
+    users_db.increase_value_in_stat_db('clicks')
     usd = value_db.read_value_db('usd')
     selected_gold = callback_data.get('probe')
     db_unit = callback_data.get('db_unit')
