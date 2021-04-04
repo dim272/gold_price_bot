@@ -16,8 +16,6 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
-    user = message.from_user
-    users_db.check_user(user)
     gr_999_rub = round(value_db.read_value_db('gr_999_rub'))
     gr_999_usd = value_db.read_value_db('gr_999_usd')
     await message.answer(f'📈 Цена золота 999 пробы:\n'
@@ -26,14 +24,13 @@ async def start_message(message: types.Message):
                          f'Какая проба Вас интересует?\n',
                          reply_markup=new_keyboard('999')
                          )
+    user = message.from_user
+    users_db.check_user(user)
 
 
 @dp.callback_query_handler(gold_choice_callback.filter(metal='gold'))
 async def gold_choice_message(call: CallbackQuery, callback_data: dict):
     await call.answer(cache_time=60)
-    user = call.from_user
-    users_db.check_user(user)
-    users_db.increase_value_in_stat_db('clicks')
     usd = value_db.read_value_db('usd')
     selected_gold = callback_data.get('probe')
     db_unit = callback_data.get('db_unit')
@@ -44,7 +41,9 @@ async def gold_choice_message(call: CallbackQuery, callback_data: dict):
                               f"{price_usd} $ за грамм\n"
                               f"Какая проба Вас интересует?\n",
                               reply_markup=new_keyboard(selected_gold))
-
+    user = call.from_user
+    users_db.check_user(user)
+    users_db.increase_value_in_stat_db('clicks')
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)

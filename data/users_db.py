@@ -93,23 +93,16 @@ def is_table_in_users_db_exist(cursor, table_name):
 
 def check_last_date_in_stat_db(connect, cursor, today):
     cursor.execute(
-        "SELECT date FROM stat WHERE rowid = 91"
+        "SELECT date FROM stat ORDER BY rowid DESC LIMIT 1"
     )
     last_date_in_stat_db = cursor.fetchone()
 
     if last_date_in_stat_db:
-        if last_date_in_stat_db != today:
-            print('Обновляю дату')
-
-            cursor.execute("DELETE FROM stat WHERE rowid = 2")
+        if last_date_in_stat_db[0] != today:
+            cursor.execute("DELETE FROM stat WHERE rowid = 1")
             connect.commit()
             cursor.execute("INSERT INTO stat (date, users, new_users, clicks) VALUES (?, ?, ?, ?)", (today, 0, 0, 0, ))
             connect.commit()
-
-        cursor.execute(
-            "SELECT Count(*) FROM stat"
-        )
-        row_count = cursor.fetchone()
 
 
 def increase_value_in_stat_db(what_value):
