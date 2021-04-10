@@ -21,6 +21,7 @@ def init_stat_db(connect, cursor):
 
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS stat ( "
+        "id             INTEGER PRIMARY KEY AUTOINCREMENT, "
         "date           TEXT, "
         "users          INT, "
         "new_users      INT, "
@@ -99,7 +100,7 @@ def check_last_date_in_stat_db(connect, cursor, today):
 
     if last_date_in_stat_db:
         if last_date_in_stat_db[0] != today:
-            cursor.execute("DELETE FROM stat WHERE rowid = 1")
+            cursor.execute("DELETE FROM stat WHERE id = (SELECT min(id) FROM stat)")
             connect.commit()
             cursor.execute("INSERT INTO stat (date, users, new_users, clicks) VALUES (?, ?, ?, ?)", (today, 0, 0, 0, ))
             connect.commit()
