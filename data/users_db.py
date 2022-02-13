@@ -204,13 +204,18 @@ def is_new_user_in_users_total_db(cursor, user):
 
 def add_new_user_in_users_total_db(connect, cursor, user, today):
 
-    name = (user.first_name + " " + user.last_name)
+    name = ''
+    for x in [user.first_name, user.last_name]:
+        if x:
+            name += f'{x} '
+    if not name:
+        name = 'NoName'
 
     cursor.execute(
         "INSERT INTO users_total "
         "(user_id, name, username, language, first_visit, last_visit, visits_amount, is_bot) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        (user.id, name, user.username, user.language_code, today, '-', '1', user.is_bot, )
+        (user.id, name.strip(), user.username, user.language_code, today, '-', '1', user.is_bot, )
     )
     connect.commit()
 
