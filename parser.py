@@ -15,7 +15,7 @@ class Parser:
     gold_prices = list()
     usd_prices = list()
 
-    def parse_values(self) -> Optional[float, float]:
+    def parse_values(self):
         # returns usd_price, gold_price
         for value_type in ['Gold', 'USD']:
             self.collect_values(value_type=value_type)
@@ -40,7 +40,7 @@ class Parser:
 
         LOGGER.log(level=20, msg=f'{value_type} values was parsed. {len(result_list)}/{len(urls)} values collects')
 
-    def _check_value_type(self, value_type: str) -> Optional[dict, list]:
+    def _check_value_type(self, value_type: str):
         if value_type == 'Gold':
             urls = GOLD_URLS
             result_list = self.gold_prices
@@ -132,7 +132,8 @@ class DataValidation:
     def _choose_gold_price(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> float:
         if len(gold_usd) > 2:
             mean = sum(gold_usd) / len(gold_usd)
-            if mean > gold_usd[0] * 0.025:
+            difference = self._get_difference(num1=mean, num2=gold_usd[0])
+            if difference > gold_usd[0] * 0.025:
                 self._exclude_gold_price_anomaly(gold_usd=gold_usd)
             return gold_usd[0]
         elif len(gold_usd) == 2:
@@ -140,9 +141,7 @@ class DataValidation:
 
     def _exclude_gold_price_anomaly(self, gold_usd: list[float]) -> None:
         def is_num1_anomaly(num1: float, num2: float) -> bool:
-            difference = num1 - num2
-            if difference < 0:
-                difference = difference + difference*2
+            difference = self._get_difference(num1=num1, num2=num2)
             if difference > num1 * 0.025:
                 return True
 
@@ -152,25 +151,30 @@ class DataValidation:
             elif index - 1 >= 0:
                 return gold_usd[index - 1]
 
-        for index, price in enumerate(gold_usd):
-            if index+1 == len(gold_usd):
+        gold_usd_copy = gold_usd.copy()
+        for index, price in enumerate(gold_usd_copy):
+            if index+1 == len(gold_usd_copy):
                 break
 
-            if is_num1_anomaly(num1=price, num2=gold_usd[index+1]):
+            if is_num1_anomaly(num1=price, num2=gold_usd_copy[index+1]):
                 next_num = found_next_check_num(ind=index)
                 if is_num1_anomaly(num1=price, num2=next_num):
                     anomaly = price
                 else:
                     anomaly = next_num
                 gold_usd.remove(anomaly)
-                break
 
-    def _choose_usd_price(self, gold_usd: list[float], gold_rub: list[float]) -> float:
-        if len(self.usd) > 1:
-            for usd_price in self.usd:
-                price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
-                if price_point < len(gold_usd)-2 and len(self.usd) > 1:
+    def _choose_usd_price(self, gold_usd: list[float], gold_rub: list[float]) -> Optional[float]:
+        usd_prices = self.usd.copy()
+        for usd_price in usd_prices:
+            price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
+            if price_point < len(gold_usd)-2:
+                if len(self.usd) > 1:
                     self.usd.remove(usd_price)
+                else:
+                    LOGGER.log(level=40, msg=f'Can\'t find correct USD price :: usd_prices={usd_prices} :: '
+                                             f'gold_usd={gold_usd} :: gold_rub={gold_rub}')
+                    return None
         return self.usd[0]
 
     def _choose_usd_gold_price_by_rub_prices(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> float:
@@ -190,13 +194,17 @@ class DataValidation:
         return quote_point
 
     def _is_usd_price_correct(self, usd_price: float, usd_gold_price: float, rub_gold_price: float) -> bool:
-        difference = usd_price / usd_gold_price - rub_gold_price
-        if difference < 0:
-            difference = difference + difference * 2
+        difference = self._get_difference(num1=((usd_price * usd_gold_price) / 31.1), num2=rub_gold_price)
         if difference < rub_gold_price * 0.25:
             return True
 
-    def _sort_gold_prices(self) -> Optional[list, list]:
+    def _get_difference(self, num1, num2):
+        if num2 > num1:
+            num1, num2 = num2, num1
+        return num1 - num2
+
+
+    def _sort_gold_prices(self):
         gold_rub = list()
         gold_usd = list()
         for item in self.gold:
