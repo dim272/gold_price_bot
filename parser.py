@@ -13,7 +13,17 @@ LOGGER = logging.getLogger(__name__)
 class Parser:
     """ Returns the price of one OZ of gold in US dollars and the quote USD/RUB """
     gold_prices = list()
-    usd_quotes = list()
+    usd_prices = list()
+
+    def parse_values(self) -> Optional[float, float]:
+        # returns usd_price, gold_price
+        for value_type in ['Gold', 'USD']:
+            self.collect_values(value_type=value_type)
+
+        if len(self.gold_prices) > 0 and len(self.usd_prices) > 0:
+            return DataValidation(usd_prices=self.usd_prices, gold_prices=self.gold_prices)
+        return None, None
+
 
     def collect_values(self, value_type: str) -> None:
         urls, result_list = self._check_value_type(value_type=value_type)
@@ -36,7 +46,7 @@ class Parser:
             result_list = self.gold_prices
         elif value_type == 'USD':
             urls = USD_URLS
-            result_list = self.usd_quotes
+            result_list = self.usd_prices
         else:
             LOGGER.log(level=40, msg=f'Value type error :: {value_type}')
             return None
@@ -108,4 +118,93 @@ class DataPipeline:
 
 class DataValidation:
     """ Determines a valid value from the list by comparing with other values """
-    pass
+
+    def __init__(self, usd_prices: list, gold_prices: list):
+        self.usd = usd_prices
+        self.gold = gold_prices
+
+    def choose_valid_values(self):
+        gold_rub, gold_usd = self._sort_gold_prices()
+        usd_price = self._choose_usd_price(gold_usd=gold_usd, gold_rub=gold_rub)
+        gold_price = self._choose_gold_price(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
+        return usd_price, gold_price
+
+    def _choose_gold_price(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> float:
+        if len(gold_usd) > 2:
+            mean = sum(gold_usd) / len(gold_usd)
+            if mean > gold_usd[0] * 0.025:
+                self._exclude_gold_price_anomaly(gold_usd=gold_usd)
+            return gold_usd[0]
+        elif len(gold_usd) == 2:
+            return self._choose_usd_gold_price_by_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
+
+    def _exclude_gold_price_anomaly(self, gold_usd: list[float]) -> None:
+        def is_num1_anomaly(num1: float, num2: float) -> bool:
+            difference = num1 - num2
+            if difference < 0:
+                difference = difference + difference*2
+            if difference > num1 * 0.025:
+                return True
+
+        def found_next_check_num(ind: int):
+            if index + 2 <= len(gold_usd):
+                return gold_usd[index + 2]
+            elif index - 1 >= 0:
+                return gold_usd[index - 1]
+
+        for index, price in enumerate(gold_usd):
+            if index+1 == len(gold_usd):
+                break
+
+            if is_num1_anomaly(num1=price, num2=gold_usd[index+1]):
+                next_num = found_next_check_num(ind=index)
+                if is_num1_anomaly(num1=price, num2=next_num):
+                    anomaly = price
+                else:
+                    anomaly = next_num
+                gold_usd.remove(anomaly)
+                break
+
+    def _choose_usd_price(self, gold_usd: list[float], gold_rub: list[float]) -> float:
+        if len(self.usd) > 1:
+            for usd_price in self.usd:
+                price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
+                if price_point < len(gold_usd)-2 and len(self.usd) > 1:
+                    self.usd.remove(usd_price)
+        return self.usd[0]
+
+    def _choose_usd_gold_price_by_rub_prices(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> float:
+        for usd_gold_price in gold_usd:
+            price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
+            if price_point > 0:
+                return usd_gold_price
+        return gold_usd[0]
+
+    def _check_usd_rub_prices(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> int:
+        quote_point = 0
+        for usd_gold_price in gold_usd:
+            for rub_gold_price in gold_rub:
+                if self._is_usd_price_correct(usd_price=usd_price, usd_gold_price=usd_gold_price,
+                                              rub_gold_price=rub_gold_price):
+                    quote_point += 1
+        return quote_point
+
+    def _is_usd_price_correct(self, usd_price: float, usd_gold_price: float, rub_gold_price: float) -> bool:
+        difference = usd_price / usd_gold_price - rub_gold_price
+        if difference < 0:
+            difference = difference + difference * 2
+        if difference < rub_gold_price * 0.25:
+            return True
+
+    def _sort_gold_prices(self) -> Optional[list, list]:
+        gold_rub = list()
+        gold_usd = list()
+        for item in self.gold:
+            source_name, value = item
+            if '[USD]' in source_name:
+                gold_usd.append(value)
+            elif '[RUB]' in source_name:
+                gold_rub.append(value)
+            else:
+                LOGGER.log(level=40, msg=f'Incorrect source name :: {source_name} :: {value}')
+        return gold_rub, gold_usd
