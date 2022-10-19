@@ -173,19 +173,14 @@ class DataValidation:
                 gold_usd.remove(anomaly)
 
     def _choose_usd_price(self, gold_usd: list[float], gold_rub: list[float]) -> Optional[float]:
-        usd_prices = self.usd.copy()
-        for usd_price in usd_prices:
-            if usd_price is None:
-                continue
-            price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
-            if price_point < len(gold_usd)-2:
-                if len(self.usd) > 1:
-                    self.usd.remove(usd_price)
-                else:
-                    LOGGER.log(level=40, msg=f'Can\'t find correct USD price :: usd_prices={usd_prices} :: '
-                                             f'gold_usd={gold_usd} :: gold_rub={gold_rub}')
-                    return None
-        return self.usd[0]
+        if not self._are_gold_prices_correct(gold_usd=gold_usd, gold_rub=gold_rub):
+            return self.usd[0]
+
+        price_top = self._get_top_usd_prices(gold_usd=gold_usd, gold_rub=gold_rub)
+        if price_top:
+            return self._get_top_price(top_price_dict=price_top)
+
+        return None
 
     def _choose_usd_gold_price_by_rub_prices(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> Optional[float]:
         gold_usd_copy = [price for price in gold_usd if price is not None]
@@ -217,7 +212,6 @@ class DataValidation:
             num1, num2 = num2, num1
         return num1 - num2
 
-
     def _sort_gold_prices(self):
         gold_rub = list()
         gold_usd = list()
@@ -230,3 +224,31 @@ class DataValidation:
             else:
                 LOGGER.log(level=40, msg=f'Incorrect source name :: {source_name} :: {value}')
         return gold_rub, gold_usd
+
+    def _are_gold_prices_correct(self, gold_usd: list[float], gold_rub: list[float]) -> bool:
+        gold_usd_cleared = [price for price in gold_usd if price]
+        if not gold_usd_cleared:
+            gold_rub_cleared = [price for price in gold_rub if price]
+            if not gold_rub_cleared:
+                return False
+        return True
+
+    def _get_top_usd_prices(self, gold_usd: list[float], gold_rub: list[float]) -> Optional[dict]:
+        price_top = {}
+        for usd_price in self.usd:
+            if usd_price is None:
+                continue
+            price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
+            if price_point > 0:
+                if price_top.get(str(usd_price)):
+                    price_top[str(usd_price)] = price_top[str(usd_price)] + price_point
+                else:
+                    price_top.update({str(usd_price): price_point})
+        return price_top
+
+    def _get_top_price(self, top_price_dict: dict) -> Optional[float]:
+        try:
+            result = sorted(top_price_dict.items(), reverse=True, key=lambda x: x[1])[0][0]
+            return float(result)
+        except [ValueError, TypeError, IndexError]:
+            return None
