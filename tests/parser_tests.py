@@ -37,6 +37,11 @@ datavalidation_cases = [
      'gold_prices': [('1[USD]', None), ('2[USD]', None), ('3[USD]', None),
                      ('1[RUB]', 3300.2), ('2[RUB]', 3120.5)],
      'correct_values': (None, None)},
+
+    {'usd_prices': [61.65, 60.5, 36.65],
+     'gold_prices': [('1[USD]', None), ('2[USD]', None), ('3[USD]', None),
+                     ('1[RUB]', None), ('2[RUB]', None)],
+     'correct_values': (61.65, None)},
 ]
 
 
