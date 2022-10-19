@@ -129,15 +129,23 @@ class DataValidation:
         gold_price = self._choose_gold_price(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
         return usd_price, gold_price
 
-    def _choose_gold_price(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> float:
-        if len(gold_usd) > 2:
-            mean = sum(gold_usd) / len(gold_usd)
-            difference = self._get_difference(num1=mean, num2=gold_usd[0])
-            if difference > gold_usd[0] * 0.025:
-                self._exclude_gold_price_anomaly(gold_usd=gold_usd)
-            return gold_usd[0]
-        elif len(gold_usd) == 2:
-            return self._choose_usd_gold_price_by_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
+    def _choose_gold_price(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> Optional[float]:
+        gold_usd_copy = [price for price in gold_usd if price is not None]
+        if len(gold_usd_copy) > 2:
+            mean = sum(gold_usd_copy) / len(gold_usd_copy)
+            difference = self._get_difference(num1=mean, num2=gold_usd_copy[0])
+            if difference > gold_usd_copy[0] * 0.025:
+                self._exclude_gold_price_anomaly(gold_usd=gold_usd_copy)
+            return gold_usd_copy[0]
+        elif len(gold_usd_copy) == 2:
+            if usd_price is None:
+                return gold_usd_copy[0]
+            return self._choose_usd_gold_price_by_rub_prices(gold_usd=gold_usd_copy, gold_rub=gold_rub,
+                                                                 usd_price=usd_price)
+        elif len(gold_usd_copy) == 1:
+            return gold_usd_copy[0]
+        else:
+            return None
 
     def _exclude_gold_price_anomaly(self, gold_usd: list[float]) -> None:
         def is_num1_anomaly(num1: float, num2: float) -> bool:
@@ -167,6 +175,8 @@ class DataValidation:
     def _choose_usd_price(self, gold_usd: list[float], gold_rub: list[float]) -> Optional[float]:
         usd_prices = self.usd.copy()
         for usd_price in usd_prices:
+            if usd_price is None:
+                continue
             price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
             if price_point < len(gold_usd)-2:
                 if len(self.usd) > 1:
@@ -177,17 +187,21 @@ class DataValidation:
                     return None
         return self.usd[0]
 
-    def _choose_usd_gold_price_by_rub_prices(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> float:
-        for usd_gold_price in gold_usd:
-            price_point = self._check_usd_rub_prices(gold_usd=gold_usd, gold_rub=gold_rub, usd_price=usd_price)
-            if price_point > 0:
-                return usd_gold_price
-        return gold_usd[0]
+    def _choose_usd_gold_price_by_rub_prices(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> Optional[float]:
+        gold_usd_copy = [price for price in gold_usd if price is not None]
+        if len(gold_usd_copy) > 0:
+            for usd_gold_price in gold_usd_copy:
+                price_point = self._check_usd_rub_prices(gold_usd=gold_usd_copy, gold_rub=gold_rub, usd_price=usd_price)
+                if price_point > 0:
+                    return usd_gold_price
+        return None
 
     def _check_usd_rub_prices(self, gold_usd: list[float], gold_rub: list[float], usd_price: float) -> int:
         quote_point = 0
         for usd_gold_price in gold_usd:
             for rub_gold_price in gold_rub:
+                if usd_gold_price is None or rub_gold_price is None:
+                    continue
                 if self._is_usd_price_correct(usd_price=usd_price, usd_gold_price=usd_gold_price,
                                               rub_gold_price=rub_gold_price):
                     quote_point += 1
