@@ -217,7 +217,6 @@ class DataValidation:
             num1, num2 = num2, num1
         return num1 - num2
 
-
     def _sort_gold_prices(self):
         gold_rub = list()
         gold_usd = list()

@@ -40,12 +40,17 @@ datavalidation_cases = [
 ]
 
 
-class TestDataValidation:
-    @pytest.mark.parametrize('value', datavalidation_cases)
-    def test_case(self, value: dict):
-        usd_prices = value.get('usd_prices')
-        gold_prices = value.get('gold_prices')
-        usd_price, gold_price = DataValidation(usd_prices=usd_prices, gold_prices=gold_prices).choose_valid_values()
-        correct_usd, correct_gold = value.get('correct_values')
-        assert usd_price == correct_usd
-        assert gold_price == correct_gold
+@pytest.mark.parametrize('value', datavalidation_cases)
+def test_datavalidation(value: dict):
+    usd_prices = value.get('usd_prices')
+    gold_prices = value.get('gold_prices')
+    usd_price, gold_price = DataValidation(usd_prices=usd_prices, gold_prices=gold_prices).choose_valid_values()
+    correct_usd, correct_gold = value.get('correct_values')
+    assert usd_price == correct_usd
+    assert gold_price == correct_gold
+
+
+# x = [('1',
+#       """<div class="chart__info__row js-ticker" data-emitbase-id="101039" data-id="5a8dad019a7947794bdacec4"
+#       data-currency="$" data-type="goods"><span class="chart__info__sum"><!---->$<!----><!---->1 642,1<!----></span>
+#       <span class="chart__info__change chart__change">(-0,1%)</span></div>""", '')]
