@@ -1,6 +1,35 @@
 import pytest
 
-from parser import  DataValidation
+from parser import DataValidation, DataPipeline
+
+datapipeline_cases = [
+    ('1650.1', 'some_xpath', 'some_url', 1650.1),
+    ('1650,44', 'some_xpath', 'some_url', 1650.44),
+    ('1650', 'some_xpath', 'some_url', 1650.0),
+    ('       1699        ', 'some_xpath', 'some_url', 1699.0),
+    ('ahlfasl aslkdjsdkj 1711,31<<dsadh swi', 'some_xpath', 'some_url', 1711.31),
+    ('ahlfasl\n1690,12<<dsadh swi', 'some_xpath', 'some_url', 1690.12),
+    ('ahlfasl\n0090,12<<dsadh swi', 'some_xpath', 'some_url', None),
+    ('16561', 'some_xpath', 'some_url', None),
+    ('165', 'some_xpath', 'some_url', None),
+    ('165,23', 'some_xpath', 'some_url', None),
+    ('kmweflkem kfmlke kfem', 'some_xpath', 'some_url', None),
+    ('kmw1777556,22kfmem', 'some_xpath', 'some_url', None),
+    ('kmw1777.5,6kfmem', 'some_xpath', 'some_url', None),
+    ('kmw1777556kfmem', 'some_xpath', 'some_url', None),
+    ('kmw17772,22kfmem', 'some_xpath', 'some_url', None),
+    ('', 'some_xpath', 'some_url', None),
+    (None, 'some_xpath', 'some_url', None),
+]
+
+
+@pytest.mark.parametrize('value', datapipeline_cases)
+def test_datapipeline(value: set):
+    value, xpath, url, expected_value = value
+    data_pipeline = DataPipeline()
+    result = data_pipeline.clear_value(value=value, url=url, xpath=xpath)
+    assert expected_value == result
+
 
 datavalidation_cases = [
     {'usd_prices': [61.7, 61.65, 61.68],
@@ -53,9 +82,3 @@ def test_datavalidation(value: dict):
     correct_usd, correct_gold = value.get('correct_values')
     assert usd_price == correct_usd
     assert gold_price == correct_gold
-
-
-# x = [('1',
-#       """<div class="chart__info__row js-ticker" data-emitbase-id="101039" data-id="5a8dad019a7947794bdacec4"
-#       data-currency="$" data-type="goods"><span class="chart__info__sum"><!---->$<!----><!---->1 642,1<!----></span>
-#       <span class="chart__info__change chart__change">(-0,1%)</span></div>""", '')]
