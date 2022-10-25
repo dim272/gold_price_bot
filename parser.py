@@ -24,17 +24,17 @@ class Parser:
             return DataValidation(usd_prices=self.usd_prices, gold_prices=self.gold_prices)
         return None, None
 
-
     def collect_values(self, value_type: str) -> None:
         urls, result_list = self._check_value_type(value_type=value_type)
         if not urls or not result_list:
             return None
 
+        data_pipe = DataPipeline()
         for source_name, source_info in urls:
             url, xpath = source_info
             r = self.get_request(url=url)
             value = self.get_value_from_request(req=r, xpath=xpath)
-            result = DataPipeline(value=value, url=url, xpath=xpath)()
+            result = data_pipe.clear_value(value=value, url=url, xpath=xpath)
             if result:
                 result_list.append((source_info, result))
 
@@ -69,15 +69,9 @@ class DataPipeline:
     2. Converts the cleared string to a float or return None
     """
 
-    def __init__(self, value: str, url: str, xpath: str,):
-        self.value = value
-        self.url = url
-        self.xpath = xpath
-
-    def __call__(self,  *args, **kwargs):
-        result_str = self.collect_numbers(self.value)
-        result_float = self.convert_to_float(value=result_str, source_url=self.url, xpath=self.xpath)
-        return result_float
+    def clear_value(self,  value: str, url: str = None, xpath: str = None):
+        result_str = self.collect_numbers(value)
+        return self.convert_to_float(value=result_str, source_url=url, xpath=xpath)
 
     def collect_numbers(self, value: str) -> Optional[str]:
         if not value:
@@ -87,9 +81,9 @@ class DataPipeline:
         for x in value:
             if not x.isdigit():
                 if x in [',', '.']:
-                    result.replace(',', '.')
+                    result = result.replace(',', '.')
                 else:
-                    result.replace(x, '')
+                    result = result.replace(x, '')
         return result
 
     def convert_to_float(self, value: str, source_url: str, xpath: str) -> Optional[float]:
@@ -99,7 +93,7 @@ class DataPipeline:
             LOGGER.log(level=40, msg=f'{error_text} value not found :: url = {source_url} :: xpath = {xpath}')
             return None
 
-        if len(value) > 7:
+        if len(value.replace('.','')) > 6:
             LOGGER.log(level=40, msg=f'{error_text} value is very long :: value = {value} :: url = {source_url}')
             return None
 
@@ -109,6 +103,8 @@ class DataPipeline:
 
         try:
             value = float(value)
+            if len(str(int(value))) != 4:
+                value = None
         except ValueError as e:
             LOGGER.log(level=40, msg=f'{error_text} {e} :: {value} :: {source_url}')
             return None
