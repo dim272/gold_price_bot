@@ -22,12 +22,13 @@ class PriceConverter:
         probes = [958, 900, 850, 750, 585, 500, 375, 333]
         for probe in probes:
             try:
-                price = round(_999_rub / 1000 * probe, 2)
+                price = int(_999_rub / 1000 * probe)
             except:
                 continue
             result[f'gr_{probe}_rub'] = price
 
         if len(result) != len(probes):
+            # TODO sent error email
             LOGGER.log(40, f'A gold probe was missed during _convert_prices :: {result}')
 
         return result

@@ -5,7 +5,7 @@ from tests import test_cases
 from utils.price_converter import PriceConverter
 
 
-class TestDataConverter:
+class TestPriceConverter:
 
     # TODO: more cases
 

@@ -20,6 +20,9 @@ class Parser:
             urls, result_list = self._check_value_type(value_type=value_type)
             asyncio.run(self.collect_values(urls=urls, result_list=result_list))
             LOGGER.log(level=30, msg=f'{value_type} values was parsed. {len(result_list)}/{len(urls)} values collects')
+            if len(result_list) != len(urls):
+                # TODO sent error email
+                pass
 
         if len(self.gold_prices) > 0 and len(self.usd_prices) > 0:
             return GoldValidation(usd_prices=self.usd_prices, gold_prices=self.gold_prices).get_valid_values()
