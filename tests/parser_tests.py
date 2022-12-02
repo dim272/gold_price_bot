@@ -1,7 +1,7 @@
 import pytest
 
 from tests import test_cases
-from parser import GoldValidation, DataPipeline
+from utils.data_utils import GoldValidation, DataPipeline
 
 
 @pytest.mark.parametrize('value', test_cases.datapipeline_cases)
